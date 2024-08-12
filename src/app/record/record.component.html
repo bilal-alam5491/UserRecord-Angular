@@ -1,0 +1,102 @@
+<div class="main-container">
+  <div class="header">
+    <h1 class="logo">User Data</h1>
+  </div>
+
+  <div class="input-section">
+    <form class="form">
+      <input
+        type="text"
+        placeholder="Enter FirstName"
+        name="firstname"
+        id="firstname"
+        [(ngModel)]="firstName"
+      />
+      <input
+        type="text"
+        placeholder="Enter LastName"
+        name="lastname"
+        id="lastname"
+        [(ngModel)]="lastName"
+      />
+      <input
+        type="email"
+        placeholder="Enter Email"
+        name="email"
+        id="email"
+        [(ngModel)]="email"
+      />
+      <input
+        type="text"
+        placeholder="Enter Phone Number"
+        name="phonenumber"
+        id="phonenumber"
+        pattern="\d*"
+        maxlength="11"
+        title="Please enter a valid phone number"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+        [(ngModel)]="phoneNumber"
+      />
+      <button type="submit" id="submit" (click)="addData()">
+        {{ update == -1 ? "Add" : "Update" }}
+      </button>
+      <button type="button" id="clearList" (click)="clearList()">
+        Clear All
+      </button>
+    </form>
+  </div>
+
+  <div class="searchDiv">
+    <input
+      type="text"
+      name="searchInput"
+      id="searchInput"
+      placeholder="Search Data"
+      [(ngModel)]="searchInput"
+      (input)="searchData()"
+    />
+  </div>
+  <div class="table-section">
+    <table>
+      <thead>
+        <tr>
+          <th>FirstName</th>
+          <th>LastName</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of displayedData; let i = index">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>
+            <button (click)="deleteIndex(i)">Delete</button>
+            <button (click)="updateIndex(i)">Update</button>
+            <button (click)="duplicateIndex(i)">Duplicate</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="paginationDiv" *ngIf="displayedData.length !== 0">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <button
+      *ngFor="let pageNumber of generatePageNumbers()"
+      (click)="goToPage(pageNumber)"
+      [ngClass]="{'active-page': currentPage === pageNumber}"
+      >
+      {{ pageNumber }}
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
+</div>
